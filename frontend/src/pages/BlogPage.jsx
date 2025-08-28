@@ -1,8 +1,12 @@
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query"
 import { useMatch } from "react-router-dom"
 import blogService from '../services/blogs'
+import { useState } from "react"
+import commentService from '../services/comments'
 
 function BlogPage() {
+    const [commentInput, setCommentInput] = useState("")
+
     const queryClient = useQueryClient()
     const match = useMatch("/blogs/:id")
     const blogId = match.params.id
@@ -47,10 +51,21 @@ function BlogPage() {
         likeMutation.mutate(updatedBlog)
     }
 
+    const addCommentMutation = useMutation({
+        mutationFn: ({blogId, text}) => commentService.newComment(blogId, {content: text}),
+        onSuccess: (newComment, {blogId, text}) => {
+            queryClient.invalidateQueries({queryKey: ["blogs", blogId]})
+        }
+    })
+
+    const onSendComment = (blodId) => {
+        addCommentMutation.mutate({blogId, text: commentInput})
+        setCommentInput("")
+    }
+
 
     const blog = blogQuery?.data
     if (!blog) return null
-    console.log(blog.comments)
     
     return (
         <div> 
@@ -60,6 +75,7 @@ function BlogPage() {
             <p>Added by {blog?.user?.name}</p>
             <div>
                 <h3> Comments </h3>
+                <div><input value={commentInput} onChange={(e) => setCommentInput(e.target.value)}/><button onClick={() => onSendComment(blog.id)}>Send</button></div>
                 <ul>
                     {(blog.comments ?? []).map(comment => {
                         return <li key={comment.id}>{comment.content}</li>

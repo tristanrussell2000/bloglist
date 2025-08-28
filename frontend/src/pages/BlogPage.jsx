@@ -50,7 +50,7 @@ function BlogPage() {
 
     const blog = blogQuery?.data
     if (!blog) return null
-
+    console.log(blog.comments)
     
     return (
         <div> 
@@ -58,6 +58,14 @@ function BlogPage() {
             {blog.url && <p><a href={blog.url}>{blog.url}</a></p>}
             <p>{blog.likes} likes <button onClick={onLike}>Like</button> </p>
             <p>Added by {blog?.user?.name}</p>
+            <div>
+                <h3> Comments </h3>
+                <ul>
+                    {(blog.comments ?? []).map(comment => {
+                        return <li key={comment.id}>{comment.content}</li>
+                    })}
+                </ul>
+            </div>
         </div>
     )
 }

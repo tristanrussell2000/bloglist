@@ -1,6 +1,7 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../model/blog')
 const User = require('../model/user')
+const Comment = require('../model/comment')
 
 function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -8,7 +9,7 @@ function delay(ms) {
 
 blogsRouter.get('/', async (request, response, next) => {
     try {
-        const blogs = await Blog.find({}).populate('user')
+        const blogs = await Blog.find({}).populate('user').populate('comments')
         response.json(blogs)
     } catch (error) {
         next(error)
@@ -17,7 +18,7 @@ blogsRouter.get('/', async (request, response, next) => {
 
 blogsRouter.get('/:id', async (request, response, next) => {
     try {
-        const blog = await Blog.findById(request.params.id).populate('user')
+        const blog = await Blog.findById(request.params.id).populate('user').populate('comments')
         if (blog) {
             return response.json(blog)
         } else {
@@ -26,6 +27,16 @@ blogsRouter.get('/:id', async (request, response, next) => {
     } catch (error) {
         next(error)
     }
+})
+
+blogsRouter.post('/:id/comment', async (request, response, next) => {
+    let comment = new Comment(request.body)
+    const commentSavePromise = comment.save()
+    const blogFindPromise = Blog.findById(request.params.id)
+    const [savedComment, blog] = await Promise.all([commentSavePromise, blogFindPromise])
+    blog.comments = [...blog.comments, comment.id]
+    await blog.save()
+    response.status(201).json(savedComment)
 })
 
 blogsRouter.post('/', async (request, response) => {

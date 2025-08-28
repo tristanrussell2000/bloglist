@@ -34,15 +34,20 @@ function Header() {
     }
 
     return (
-        <div>
+        <>
             {notification.visible && <Banner message={notification.message} color={notification.color}/>}
-            {user !== null && <p>{user.name} logged-in <button onClick={onLogOut}>Log Out</button></p>}
-            {user === null && <LoginForm onBadCredentials={() => showBanner("Error logging in: wrong username or password", "red")}/> }
-            <div style={{"display": "flex", "width": "100%"}}>
-                <Link style={{"padding": "10px", "border": "1px solid black"}} to="/">Blogs</Link>
-                <Link style={{"padding": "10px", "border": "1px solid black"}} to="/users">Users</Link>
+            <div style={{"backgroundColor": "grey"}}>
+                
+                <div style={{"display": "flex", "width": "100%", "paddingLeft": "1em","alignItems": "center", "gap": "1em"}}>
+                    <Link  style={{"verticalAlign": "middle"}} to="/">Blogs</Link>
+                    <Link  to="/users">Users</Link>
+                    <div>
+                        {user === null && <LoginForm onBadCredentials={() => showBanner("Error logging in: wrong username or password", "red")}/> }
+                        {user !== null && <p>{user.name} logged-in <button onClick={onLogOut}>Log Out</button></p>}
+                    </div>
+                </div>
             </div>
-        </div>
+        </>
     )
 }
 

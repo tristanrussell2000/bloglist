@@ -6,6 +6,7 @@ import Banner from "./Banner"
 import LoginForm from "./LoginForm"
 import { Link } from 'react-router-dom'
 import { Navbar, NavbarDivider, NavbarGroup, NavbarHeading } from "@blueprintjs/core"
+import { ShellBar, ShellBarItem } from "@ui5/webcomponents-react"
 
 function Header() {
     const user = useUser()
@@ -37,18 +38,19 @@ function Header() {
     return (
         <>
             {notification.visible && <Banner message={notification.message} color={notification.color}/>}
-            <Navbar>
-                <NavbarGroup>
+            <ShellBar primaryTitle="Blogs">
+                <ShellBarItem>
                     <Link  to="/">Blogs</Link>
-                    <NavbarDivider/>
-                    <Link  to="/users">Users</Link>
-                    <NavbarDivider/>
-                    <NavbarHeading>
-                        {user === null && <LoginForm onBadCredentials={() => showBanner("Error logging in: wrong username or password", "red")}/> }
-                        {user !== null && <>{user.name} logged-in <button onClick={onLogOut}>Log Out</button></>}
-                    </NavbarHeading>
-                </NavbarGroup>
-            </Navbar>
+                </ShellBarItem>
+                
+                <NavbarDivider/>
+                <Link  to="/users">Users</Link>
+                <NavbarDivider/>
+                <NavbarHeading>
+                    {user === null && <LoginForm onBadCredentials={() => showBanner("Error logging in: wrong username or password", "red")}/> }
+                    {user !== null && <>{user.name} logged-in <button onClick={onLogOut}>Log Out</button></>}
+                </NavbarHeading>
+            </ShellBar>
         </>
     )
 }

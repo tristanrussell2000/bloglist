@@ -3,6 +3,7 @@ import blogService from '../services/blogs'
 import { Link } from "react-router-dom"
 import NewBlogForm from "../components/NewBlogForm"
 import {Button, CardList, Card, Section, SectionCard, H2} from "@blueprintjs/core"
+import {Bar, ObjectPage, Page, Panel} from '@ui5/webcomponents-react'
 
 const BlogsPage = () => {
     const queryClient = useQueryClient()
@@ -44,20 +45,24 @@ const BlogsPage = () => {
     }
 
     return (
-        <Section>
-            <SectionCard>
-                <H2>Blogs</H2>
+        <div style={{"height": "100vh"}}>
+
+        
+        <Page header={<Bar slot="header"> <h2 > Blogs </h2> </Bar>}>
+            <Panel>
                 <NewBlogForm/>
-            </SectionCard>
-            <CardList>
+            </Panel>
+            
+            <Panel>
                 {sortedBlogs.map(blog => {
                     return <Card key={blog.id} >
                         <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
                         <Button style={{"marginLeft": "auto", "marginRight": 0}} onClick={() => handleDelete(blog.id)}>Delete</Button>
                     </Card>
                 })}
-            </CardList>
-        </Section>
+            </Panel>
+        </Page>
+        </div>
     )
 }
 

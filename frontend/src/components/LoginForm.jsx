@@ -9,8 +9,7 @@ function LoginForm({onBadCredentials}) {
 
     const userDispatch = useUserDispatch()
 
-    const handleLogin = async event => {
-        event.preventDefault()
+    const handleLogin = async () => {
         try {
             const user = await loginService.login({
                 username, password
@@ -37,18 +36,11 @@ function LoginForm({onBadCredentials}) {
 
     return (
         <div>
-            <h2>Login</h2>
-            <form onSubmit={handleLogin}>
-                <div>
-                    <label>Username: </label>
-                    <input type="text" name="Username" value={username} onChange={event => setUsername(event.target.value)}/>
-                </div>
-                <div>
-                    <label>Password: </label>
-                    <input type="password" name="Password" value={password} onChange={event=>setPassword(event.target.value)}/>
-                </div>
-                <button type="submit">Log In</button>
-            </form>
+            <label>Username: </label>
+            <input style={{"marginRight": "1em"}} type="text" name="Username" value={username} onChange={event => setUsername(event.target.value)}/>
+            <label>Password: </label>
+            <input type="password" name="Password" value={password} onChange={event=>setPassword(event.target.value)}/>
+            <button type="submit" onClick={handleLogin}>Log In</button>
         </div>
     )
 }

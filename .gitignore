@@ -25,3 +25,7 @@ coverage/
 
 # Editor/OS-generated files
 .DS_Store
+
+
+frontend/package-lock.json
+dist/

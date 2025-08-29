@@ -1,9 +1,11 @@
-import { useQuery, useMutation } from "@tanstack/react-query"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import blogService from '../services/blogs'
 import { Link } from "react-router-dom"
 import NewBlogForm from "../components/NewBlogForm"
+import {Button, CardList, Card, Section, SectionCard, H2} from "@blueprintjs/core"
 
 const BlogsPage = () => {
+    const queryClient = useQueryClient()
     const blogQuery = useQuery({
         queryKey: ["blogs"],
         queryFn: blogService.getAll
@@ -31,6 +33,7 @@ const BlogsPage = () => {
                     user: null
                 })
             }
+            console.error(error)
         }
     })
 
@@ -41,16 +44,20 @@ const BlogsPage = () => {
     }
 
     return (
-        <>
-            <h2>Blogs</h2>
-            <NewBlogForm/>
-            {sortedBlogs.map(blog => {
-                return <div key={blog.id} style={{"border": "1px solid black", "paddingTop": "1em", "paddingLeft": "0.5em", "display": "flex"}}>
-                    <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-                    <button style={{"marginLeft": "auto", "marginRight": 0}} onClick={() => handleDelete(blog.id)}>Delete</button>
-                </div>
-            })}
-        </>
+        <Section>
+            <SectionCard>
+                <H2>Blogs</H2>
+                <NewBlogForm/>
+            </SectionCard>
+            <CardList>
+                {sortedBlogs.map(blog => {
+                    return <Card key={blog.id} >
+                        <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+                        <Button style={{"marginLeft": "auto", "marginRight": 0}} onClick={() => handleDelete(blog.id)}>Delete</Button>
+                    </Card>
+                })}
+            </CardList>
+        </Section>
     )
 }
 

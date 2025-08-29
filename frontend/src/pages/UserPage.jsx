@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { useMatch } from "react-router-dom"
 import usersService from '../services/blogUsers'
+import { Section, SectionCard } from "@blueprintjs/core"
 
 const UserPage = () => {
     const usersQuery = useQuery({
@@ -16,15 +17,17 @@ const UserPage = () => {
     }
     const blogs = user.blogs ?? []
     return (
-        <div>
-            <h2> {user?.name} </h2>
-            <h3> Added Blogs </h3>
-            <ul>
-                {blogs.map(blog => {
-                    return <li key={blog.id}>{blog.title}</li>
-                })}
-            </ul>
-        </div>
+        <Section>
+            <SectionCard>
+                <h2> {user?.name} </h2>
+                <h3> Added Blogs </h3>
+                <ul>
+                    {blogs.map(blog => {
+                        return <li key={blog.id}>{blog.title}</li>
+                    })}
+                </ul>
+            </SectionCard>
+        </Section>
     )
 }
 

@@ -71,7 +71,7 @@ blogsRouter.delete('/:id', async (request, response, next) => {
 
 blogsRouter.patch('/:id', async (request, response, next) => {
     try {
-        await delay(2000)
+        //await delay(2000)
         const blogUpdate = request.body
         const blog = await Blog.findById(request.params.id)
         Object.assign(blog, blogUpdate)

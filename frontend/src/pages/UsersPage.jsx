@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import usersService from '../services/blogUsers'
+import { H2, HTMLTable, Section, SectionCard } from "@blueprintjs/core"
 
 const UsersTable = ({users}) => {
     return (
-        <table>
+        <HTMLTable>
             <thead>
                 <tr>
                     <td><b> Name</b> </td>
@@ -23,7 +24,7 @@ const UsersTable = ({users}) => {
                     </tr>
                 })}
             </tbody>
-        </table>
+        </HTMLTable>
     )
 }
 
@@ -38,11 +39,13 @@ const UsersPage = () => {
     }
 
     return (
-        <div>
-            <h2> Users </h2>
-            { usersQuery.isLoading && <p> Loading ...</p>}  
-            { usersQuery.data && <UsersTable users={usersQuery.data}/>}
-        </div>
+        <Section>
+            <SectionCard>
+                <H2> Users </H2>
+                { usersQuery.isLoading && <p> Loading ...</p>}  
+                { usersQuery.data && <UsersTable users={usersQuery.data}/>}
+            </SectionCard>
+        </Section>
     )
 }
 export default UsersPage

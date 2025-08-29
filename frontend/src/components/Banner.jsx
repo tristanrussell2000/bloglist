@@ -1,8 +1,15 @@
+import { Callout } from "@blueprintjs/core"
+
 function Banner({message, color}) {
+    const intent = color === "green"
+    ? "success"
+    : color === "red"
+    ? "danger"
+    : "primary"
     return (
-        <div style={{"border": `2px solid ${color}`}}>
+        <Callout intent={intent}>
             {message}
-        </div>
+        </Callout>
     )
 }
 

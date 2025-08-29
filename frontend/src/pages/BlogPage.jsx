@@ -3,6 +3,7 @@ import { useMatch } from "react-router-dom"
 import blogService from '../services/blogs'
 import { useState } from "react"
 import commentService from '../services/comments'
+import { Section, SectionCard } from "@blueprintjs/core"
 
 function BlogPage() {
     const [commentInput, setCommentInput] = useState("")
@@ -58,7 +59,7 @@ function BlogPage() {
         }
     })
 
-    const onSendComment = (blodId) => {
+    const onSendComment = () => {
         addCommentMutation.mutate({blogId, text: commentInput})
         setCommentInput("")
     }
@@ -68,21 +69,23 @@ function BlogPage() {
     if (!blog) return null
     
     return (
-        <div> 
-            <h2> {blog.title} </h2>
-            {blog.url && <p><a href={blog.url}>{blog.url}</a></p>}
-            <p>{blog.likes} likes <button onClick={onLike}>Like</button> </p>
-            <p>Added by {blog?.user?.name}</p>
-            <div>
-                <h3> Comments </h3>
-                <div><input value={commentInput} onChange={(e) => setCommentInput(e.target.value)}/><button onClick={() => onSendComment(blog.id)}>Send</button></div>
+        <Section > 
+            <SectionCard>
+                <h2>{blog.title}</h2>
+                {blog.url && <p><a href={blog.url}>{blog.url}</a></p>}
+                <p>{blog.likes} likes <button onClick={onLike}>Like</button> </p>
+                <p>Added by {blog?.user?.name}</p>
+            </SectionCard>  
+            <SectionCard>
+                <h3>Comments</h3>
+                <input value={commentInput} onChange={(e) => setCommentInput(e.target.value)}/><button onClick={onSendComment}>Send</button>
                 <ul>
                     {(blog.comments ?? []).map(comment => {
                         return <li key={comment.id}>{comment.content}</li>
                     })}
                 </ul>
-            </div>
-        </div>
+            </SectionCard>
+        </Section>
     )
 }
 

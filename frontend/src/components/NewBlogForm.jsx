@@ -33,6 +33,11 @@ function NewBlogForm() {
         setFormAuthor("")
     }
 
+    const handleClose = (event) => {
+        event.preventDefault()
+        setVisible(false)
+    }
+
     if (!visible) {
         return <div>
             <button onClick={() => setVisible(true)}>Add</button>
@@ -49,6 +54,7 @@ function NewBlogForm() {
                     <label>Author: </label><input name="Author" value={formAuthor} onChange={v => setFormAuthor(v.target.value)}/>
                 </div>
                 <button type="submit">Add</button>
+                <button onClick={handleClose}>Close</button>
             </form>
         </div>
     )
